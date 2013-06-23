@@ -1,0 +1,55 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+#
+# from vagrant.rb
+plugin_load_proc = lambda do |directory|
+  # We only care about directories
+  next false if !directory.directory?
+
+  # If there is a plugin file in the top-level directory, then load
+  # that up.
+  plugin_file = directory.join("plugin.rb")
+  if plugin_file.file?
+    puts "[INFO]loading monkey patch: #{plugin_file}"
+    load(plugin_file)
+    next true
+  end
+end
+
+Vagrant.source_root.join(File.dirname(__FILE__) + "/patch/plugins/communicators/").children(true).each do |directory|
+  # Ignore non-directories
+  next if !directory.directory?
+
+  # Load from this directory, and exit if we successfully loaded a plugin
+  puts directory
+  next if plugin_load_proc.call(directory)
+end
+
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "dummy"
+  config.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
+
+  config.vm.provider :aws do |aws, override|
+    aws.access_key_id = ENV['AWS_ACCESS_KEY_ID']
+    aws.secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
+    aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
+
+    override.ssh.username = "ec2-user"
+    override.ssh.private_key_path = ENV['AWS_PRIVATE_KEY_PATH']
+
+    aws.tags = {"Name" => "monkey-patch", "env" => "dev"}
+    aws.region = "ap-northeast-1"
+    aws.availability_zone = "ap-northeast-1a"
+    aws.ami = "ami-39b23d38"
+    aws.instance_type = "t1.micro"
+    aws.security_groups = ["web"]
+  end
+
+  config.omnibus.chef_version = "11.4.4"
+
+  config.vm.provision :chef_solo do |chef|
+    chef.cookbooks_path = "./cookbooks"
+    chef.add_recipe "apache"
+  end
+end
