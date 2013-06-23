@@ -1,0 +1,37 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+require 'berkshelf/vagrant'
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "CentOS-6.4-x86_64-ja"
+  config.vm.box_url = "https://dl.dropboxusercontent.com/u/428597/vagrant_boxes/CentOS-6.4-x86_64-ja.box"
+  config.vm.network :private_network, ip: "192.168.33.10"
+  config.vm.provider :virtualbox do |vb|
+    # Don't boot with headless mode
+    vb.gui = true
+ 
+    # Use VBoxManage to customize the VM. For example to change memory:
+    vb.customize ["modifyvm", :id, "--memory", "1024"]
+  end
+  config.berkshelf.enabled = true
+
+  config.vm.provision :chef_solo do |chef|
+    chef.add_recipe "mysql::default"
+    chef.add_recipe "mysql::server"
+    chef.add_recipe "php"
+    chef.add_recipe "resolver"
+    chef.add_recipe "iptables"
+    chef.add_recipe "myapp"
+    chef.json = {
+      :mysql => {
+        :server_root_password => "passwd",
+        :server_repl_password => "passwd",
+        :server_debian_password => "passwd"
+      },
+      :resolver => {
+        :search => "localhost",
+        :nameservers => ["8.8.8.8", "8.8.1.1"]
+      }
+    }
+  end
+end

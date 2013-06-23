@@ -1,0 +1,7 @@
+site :opscode
+cookbook 'resolver'
+cookbook 'mysql'
+cookbook 'php'
+cookbook 'iptables'
+
+cookbook 'myapp', path:"./myapp"
