@@ -1,0 +1,29 @@
+{
+  "builders":[{
+    "type": "virtualbox",
+    "guest_os_type": "RedHat_64",
+    "iso_url": "/Users/ryuzee/dev/vagrant/tools/veewee/iso/CentOS-6.4-x86_64-minimal.iso",
+    "iso_md5": "4a5fa01c81cc300f4729136e28ebe600",
+    "ssh_username": "vagrant",
+    "ssh_password": "vagrant",
+    "ssh_wait_timeout": "3000s",
+    "vm_name": "box",
+    "http_directory": "./",
+    "boot_wait": "30s",
+    "boot_command":[
+      "<esc><wait>",
+      "linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg ",
+      "<enter><wait>"
+    ]
+  }],
+  "provisioners":[{
+    "type": "shell",
+    "script": "virtualbox.sh"
+  }],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "./CentOS-6.4.box"
+    }
+  ]
+}
