@@ -10,6 +10,7 @@
     "vm_name": "box",
     "http_directory": "./",
     "boot_wait": "30s",
+    "vagrantfile_template": "./Vagrantfile",
     "boot_command":[
       "<esc><wait>",
       "linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg ",

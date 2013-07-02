@@ -1,5 +1,8 @@
 #!/bin/bash
 
+sudo sed -i "s/^.*requiretty/#Defaults requiretty/" /etc/sudoers
+sudo sed -i "s/#UseDNS yes/UseDNS no/" /etc/ssh/sshd_config
+
 sudo sh -c 'echo "[epel]" >> /etc/yum.repos.d/epel.repo'
 sudo sh -c 'echo "name=epel" >> /etc/yum.repos.d/epel.repo'
 sudo sh -c 'echo "baseurl=http://download.fedoraproject.org/pub/epel/6/\$basearch" >> /etc/yum.repos.d/epel.repo'
