@@ -8,7 +8,9 @@
     "ssh_password": "vagrant",
     "ssh_wait_timeout": "3000s",
     "http_directory": "./",
+    "vm_name": "box",
     "boot_wait": "30s",
+    "vagrantfile_template": "./Vagrantfile",
     "boot_command":[
       "<esc><esc><enter><wait>",
       "/install/vmlinuz noapic ",
@@ -21,6 +23,11 @@
       "initrd=/install/initrd.gz -- ",
       "<enter><wait>"
     ]
+  }],
+  "provisioners":[{
+    "type": "shell",
+    "script": "postinstall.sh",
+    "execute_command": "echo 'vagrant' | sudo -S sh '{{ .Path }}'"
   }],
   "post-processors": [
     {
