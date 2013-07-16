@@ -11,10 +11,17 @@ Vagrant.configure("2") do |config|
   config.vm.provision :chef_client do |chef|
     chef.chef_server_url = "https://chef.meguro.ryuzee.com"
     chef.validation_client_name = "chef-validator"
-    chef.validation_key_path = "#{ENV['HOME']}/.chef/chef-validator.pem"
-    chef.client_key_path = "#{ENV['HOME']}/.chef/client.pem"
+    chef.validation_key_path = pathconv "#{ENV['HOME']}/.chef/chef-validator.pem"
+    chef.client_key_path = pathconv "#{ENV['HOME']}/.chef/client.pem"
     chef.environment ="development"
     chef.add_role "web"
     chef.add_recipe "analog"
   end
+end
+
+def pathconv(path)
+  if(RUBY_PLATFORM.downcase =~ /mswin(?!ce)|mingw|cygwin|bccwin/)
+    path = path.gsub('/', '\\')
+  end
+  path
 end
