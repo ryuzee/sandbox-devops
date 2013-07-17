@@ -22,12 +22,12 @@ Vagrant.configure("2") do |config|
       override.ssh.private_key_path = ENV['AWS_PRIVATE_KEY_PATH']
  
       # タグを指定します
-#aws.tags = ["test", "dev", "web"]
+      aws.tags = aws.tags = { "Name" => "test", "env" => "dev", "role" => "web"}
       # リージョンを設定します
       aws.region = "ap-northeast-1"
       # アベイラビリティゾーンを設定する必要がある場合
       aws.availability_zone = "ap-northeast-1c"
-      # 標準のAmazonLinuxの場合。Chefを使うなら専用のAMIを使う 
+      # 標準のAmazonLinuxの場合はrequirettyでこけるので自分用のAMIをPackerで作っておく 
       aws.ami = "ami-71b22570"
       # インスタンスタイプを設定します
       aws.instance_type = "t1.micro"
@@ -61,7 +61,7 @@ Vagrant.configure("2") do |config|
       override.ssh.private_key_path = ENV['AWS_PRIVATE_KEY_PATH']
  
       # タグを指定します
-#      aws.tags = ["test", "dev", "db"]
+      aws.tags = aws.tags = { "Name" => "test", "env" => "dev", "role" => "db"}
       # リージョンを設定します
       aws.region = "ap-northeast-1"
       # アベイラビリティゾーンを設定する必要がある場合
