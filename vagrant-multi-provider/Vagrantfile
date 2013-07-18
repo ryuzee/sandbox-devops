@@ -1,0 +1,37 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  config.vm.provision :shell, :path => "script.sh"
+
+  ## virtualbox
+  config.vm.provider :virtualbox do |vb, override|
+    override.vm.box = "CentOS-6.4-x86_64-ja"
+    override.vm.box_url = "http://domain.com/path/to/above.box"
+    override.vm.network :private_network, ip: "192.168.33.10"
+    vb.gui = true
+    vb.customize ["modifyvm", :id, "--memory", "1024"]
+  end
+
+  ## aws
+  config.vm.provider :aws do |aws, override|
+    override.vm.box = "dummy"
+    override.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
+    override.ssh.username = 'ec2-user' 
+    override.ssh.private_key_path = ENV['AWS_PRIVATE_KEY_PATH']
+
+    aws.access_key_id = ENV['AWS_ACCESS_KEY_ID']
+    aws.secret_access_key = ENV['AWS_SECRET_KEY']
+    aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
+    aws.tags = aws.tags = { "Name" => "test", "env" => "dev", "role" => "web"}
+    aws.region = "ap-northeast-1"
+    aws.availability_zone = "ap-northeast-1c"
+    # 標準のAmazonLinuxの場合はrequirettyでこけるので自分用のAMIをPackerで作っておく 
+    # aws.ami = "ami-39b23d38" # 標準Amazonlinux
+    aws.ami = "ami-71b22570"
+    aws.instance_type = "t1.micro"
+    aws.ssh_username = 'ec2-user' 
+    aws.security_groups = ["web"]
+  end
+end
