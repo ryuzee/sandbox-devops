@@ -57,7 +57,7 @@ Vagrant.configure("2") do |config|
       chef.validation_key_path = pathconv "#{ENV['HOME']}/.chef/validation.pem"
       chef.environment = "development"
       chef.validation_client_name = "chef-validator"
-      chef.client_key_path = pathconv "#{ENV['HOME']}/.chef/client.pem"
+      chef.client_key_path = "/etc/chef/client.pem"
       chef.add_role "web"
     end
   end
@@ -111,7 +111,7 @@ Vagrant.configure("2") do |config|
       chef.validation_key_path = pathconv "#{ENV['HOME']}/.chef/validation.pem"
       chef.environment = "development"
       chef.validation_client_name = "chef-validator"
-      chef.client_key_path = pathconv "#{ENV['HOME']}/.chef/client.pem"
+      chef.client_key_path = "/etc/chef/client.pem"
       chef.add_role "db"
     end
   end
