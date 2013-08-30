@@ -6,7 +6,7 @@
     "instance_type": "m1.medium",
     "ssh_username": "ec2-user",
     "ssh_timeout": "5m",
-    "ami_name": "amznlinux-{{.CreateTime}}"
+    "ami_name": "amznlinux-{{timestamp}}"
   }],
   "provisioners": [{
     "type": "shell",
