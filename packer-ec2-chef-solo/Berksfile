@@ -1,0 +1,6 @@
+site :opscode
+
+cookbook 'yum'
+cookbook 'apache2', :path => '../../ryuzee-cookbooks/apache2'
+cookbook 'memcached', :git => 'git://github.com/ryuzee-cookbooks/memcached.git'
+cookbook 'timezone', :path => '../../ryuzee-cookbooks/timezone'
