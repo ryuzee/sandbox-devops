@@ -12,7 +12,7 @@
     "type": "chef-solo",
     "cookbook_paths": ["./vendor-cookbooks/"],
     "run_list": ["timezone", "apache2", "memcached"],
-    "json": {},
+    "json": {"memcached":{"maxcon":"512","cachesize":"512"}},
     "prevent_sudo": false,
     "skip_install": false
   }]
