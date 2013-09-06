@@ -2,15 +2,15 @@
   "builders":[{
     "type": "virtualbox",
     "guest_os_type": "Ubuntu_64",
-    "iso_url": "http://releases.ubuntu.com/12.04/ubuntu-12.04.2-server-amd64.iso",
-    "iso_md5": "af5f788aee1b32c4b2634734309cc9e9",
+    "iso_url": "http://releases.ubuntu.com/12.04/ubuntu-12.04.3-server-amd64.iso",
+    "iso_checksum": "2cbe868812a871242cdcdd8f2fd6feb9",
+    "iso_checksum_type": "md5",
     "ssh_username": "vagrant",
     "ssh_password": "vagrant",
     "ssh_wait_timeout": "3000s",
     "http_directory": "./",
     "vm_name": "box",
     "boot_wait": "30s",
-    "vagrantfile_template": "./Vagrantfile",
     "boot_command":[
       "<esc><esc><enter><wait>",
       "/install/vmlinuz noapic ",
@@ -32,7 +32,8 @@
   "post-processors": [
     {
       "type": "vagrant",
-      "output": "./ubuntu-12.04.2-server-amd64.box"
+      "output": "./ubuntu-12.04.2-server-amd64.box",
+      "vagrantfile_template": "./Vagrantfile"
     }
   ]
 }
