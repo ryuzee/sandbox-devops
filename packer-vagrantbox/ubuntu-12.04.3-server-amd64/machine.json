@@ -32,7 +32,7 @@
   "post-processors": [
     {
       "type": "vagrant",
-      "output": "./ubuntu-12.04.2-server-amd64.box",
+      "output": "./ubuntu-12.04.3-server-amd64.box",
       "vagrantfile_template": "./Vagrantfile"
     }
   ]
