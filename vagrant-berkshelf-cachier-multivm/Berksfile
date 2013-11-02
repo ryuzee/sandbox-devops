@@ -1,0 +1,6 @@
+site :opscode
+cookbook 'resolver'
+cookbook 'apache2'
+cookbook 'mysql'
+cookbook 'php'
+

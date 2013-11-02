@@ -1,0 +1,60 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+require 'berkshelf/vagrant'
+
+Vagrant.configure("2") do |config|
+  config.cache.auto_detect = true
+  config.cache.scope = :machine
+  config.cache.enable :yum
+  config.cache.enable :chef
+
+  config.vm.define :web do |web|
+    web.vm.box = "CentOS-6.4-x86_64-ja"
+    web.vm.box_url = "https://dl.dropboxusercontent.com/u/428597/vagrant_boxes/CentOS-6.4-x86_64-ja.box"
+    web.vm.network :private_network, ip: "192.168.33.10"
+    web.berkshelf.enabled = true
+    web.vm.provision :chef_solo do |chef|
+      chef.add_recipe "mysql::default"
+      chef.add_recipe "mysql::server"
+      chef.add_recipe "php"
+      chef.add_recipe "apache2"
+      chef.add_recipe "resolver"
+      chef.json = {
+        :mysql => {
+          :server_root_password => "passwd",
+          :server_repl_password => "passwd",
+          :server_debian_password => "passwd"
+        },
+        :resolver => {
+          :search => "localhost",
+          :nameservers => ["8.8.8.8", "8.8.1.1"]
+        }
+      }
+    end
+  end
+
+  config.vm.define :db do |db|
+    db.vm.box = "CentOS-6.4-x86_64-ja"
+    db.vm.box_url = "https://dl.dropboxusercontent.com/u/428597/vagrant_boxes/CentOS-6.4-x86_64-ja.box"
+    db.vm.network :private_network, ip: "192.168.33.11"
+    db.berkshelf.enabled = true
+    db.vm.provision :chef_solo do |chef|
+      chef.add_recipe "mysql::default"
+      chef.add_recipe "mysql::server"
+      chef.add_recipe "php"
+      chef.add_recipe "resolver"
+      chef.add_recipe "apache2"
+      chef.json = {
+        :mysql => {
+          :server_root_password => "passwd",
+          :server_repl_password => "passwd",
+          :server_debian_password => "passwd"
+        },
+        :resolver => {
+          :search => "localhost",
+          :nameservers => ["8.8.8.8", "8.8.1.1"]
+        }
+      }
+    end
+  end
+end
