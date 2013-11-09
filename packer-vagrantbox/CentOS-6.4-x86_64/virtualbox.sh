@@ -2,6 +2,7 @@
 
 sudo sed -i "s/^.*requiretty/#Defaults requiretty/" /etc/sudoers
 sudo sed -i "s/#UseDNS yes/UseDNS no/" /etc/ssh/sshd_config
+sudo sed -i "s/SELINUX=enforcing/SELINUX=disabled/" /etc/selinux/config
 
 sudo sh -c 'echo "[epel]" >> /etc/yum.repos.d/epel.repo'
 sudo sh -c 'echo "name=epel" >> /etc/yum.repos.d/epel.repo'
@@ -26,5 +27,7 @@ sudo mount -o loop /home/vagrant/VBoxGuestAdditions.iso /mnt
 sudo sh /mnt/VBoxLinuxAdditions.run
 sudo umount /mnt
 #rm -rf /home/vagrant/VBoxGuestAdditions*.iso
-
 sudo /etc/rc.d/init.d/vboxadd setup
+
+sudo su -c "curl -L https://www.opscode.com/chef/install.sh | bash"
+
