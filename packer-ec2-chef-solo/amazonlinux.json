@@ -2,7 +2,7 @@
   "builders": [{
     "type": "amazon-ebs",
     "region": "ap-northeast-1",
-    "source_ami": "ami-39b23d38",
+    "source_ami": "ami-3561fe34",
     "instance_type": "m1.medium",
     "ssh_username": "ec2-user",
     "ssh_timeout": "5m",
