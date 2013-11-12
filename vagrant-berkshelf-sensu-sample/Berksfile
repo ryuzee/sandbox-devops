@@ -5,3 +5,5 @@ cookbook 'rabbitmq'
 cookbook 'redisio'
 
 cookbook 'sensu', git:"https://github.com/sensu/sensu-chef.git"
+
+cookbook 'myapp', path:"./myapp"
