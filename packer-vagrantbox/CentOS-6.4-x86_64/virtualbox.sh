@@ -1,5 +1,6 @@
 #!/bin/bash
 
+sudo /usr/sbin/setenforce 0
 sudo sed -i "s/^.*requiretty/#Defaults requiretty/" /etc/sudoers
 sudo sed -i "s/#UseDNS yes/UseDNS no/" /etc/ssh/sshd_config
 sudo sed -i "s/SELINUX=enforcing/SELINUX=disabled/" /etc/selinux/config
@@ -30,4 +31,5 @@ sudo umount /mnt
 sudo /etc/rc.d/init.d/vboxadd setup
 
 sudo su -c "curl -L https://www.opscode.com/chef/install.sh | bash"
-
+which chef-solo
+sleep 5 
