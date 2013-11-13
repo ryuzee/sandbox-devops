@@ -3,7 +3,9 @@ cookbook 'apt'
 cookbook 'yum'
 cookbook 'rabbitmq'
 cookbook 'redisio'
+cookbook 'iptables'
 
 cookbook 'sensu', git:"https://github.com/sensu/sensu-chef.git"
 
-cookbook 'myapp', path:"./myapp"
+cookbook 'acme_sensu_client', path:"./acme_sensu_client"
+cookbook 'acme_sensu_server', path:"./acme_sensu_server"
