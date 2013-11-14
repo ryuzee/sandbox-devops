@@ -19,12 +19,6 @@ Vagrant.configure("2") do |config|
 
     server.vm.provision :chef_solo do |chef|
       chef.add_recipe "acme_sensu_server"
-      chef.add_recipe "sensu::default"
-      chef.add_recipe "sensu::rabbitmq"
-      chef.add_recipe "sensu::redis"
-      chef.add_recipe "sensu::api_service"
-      chef.add_recipe "sensu::dashboard_service"
-      chef.add_recipe "sensu::server_service"
       chef.json = {
         :sensu => {
             :use_ssl => false,
@@ -67,9 +61,7 @@ Vagrant.configure("2") do |config|
     end
 
     client.vm.provision :chef_solo do |chef|
-      chef.add_recipe "sensu::default"
       chef.add_recipe "acme_sensu_client"
-      chef.add_recipe "sensu::client_service"
       chef.json = {
         :acme_sensu_client => {
           :ipaddress => "192.168.33.200",
