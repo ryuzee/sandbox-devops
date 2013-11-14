@@ -18,3 +18,9 @@ execute "chmod 644 /etc/sensu/conf.d/client.json" do
 end
 
 include_recipe "sensu::client_service"
+
+# Installing check-procs
+remote_file "/etc/sensu/plugins/check-procs.rb" do
+  source "https://raw.github.com/sensu/sensu-community-plugins/master/plugins/processes/check-procs.rb"
+  mode 0755
+end

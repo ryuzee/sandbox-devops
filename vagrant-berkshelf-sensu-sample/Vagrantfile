@@ -19,6 +19,7 @@ Vagrant.configure("2") do |config|
 
     server.vm.provision :chef_solo do |chef|
       chef.add_recipe "sensu-server-wrapper"
+      chef.add_recipe "sensu-server-wrapper::check"
       chef.json = {
         :sensu => {
             :rabbitmq => {
