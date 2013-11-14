@@ -10,3 +10,10 @@ include_recipe "iptables"
 iptables_rule "http_8080"
 iptables_rule "rabbitmq"
 iptables_rule "ssh"
+
+include_recipe "yum::epel"
+package "erlang" do
+  action :install
+#  options "--disablerepo=\* --enablerepo=epel"
+  options "--enablerepo=epel"
+end
