@@ -7,5 +7,5 @@ cookbook 'iptables'
 
 cookbook 'sensu', git:"https://github.com/sensu/sensu-chef.git"
 
-cookbook 'acme_sensu_client', path:"./acme_sensu_client"
-cookbook 'acme_sensu_server', path:"./acme_sensu_server"
+cookbook 'sensu-client-wrapper', path:"./sensu-client-wrapper"
+cookbook 'sensu-server-wrapper', path:"./sensu-server-wrapper"

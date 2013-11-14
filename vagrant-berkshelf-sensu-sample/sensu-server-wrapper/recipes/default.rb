@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: myapp
+# Cookbook Name:: sensu-server-wrapper 
 # Recipe:: default
 #
-# Copyright 2013, YOUR_COMPANY_NAME
+# Copyright 2013, Ryutaro YOSHIBA 
 #
 # All rights reserved - Do Not Redistribute
 #
