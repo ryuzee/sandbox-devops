@@ -21,27 +21,11 @@ Vagrant.configure("2") do |config|
       chef.add_recipe "sensu-server-wrapper"
       chef.json = {
         :sensu => {
-            :use_ssl => false,
             :rabbitmq => {
               :host => "192.168.33.10",
-              :port => 5672, 
-              :user => "admin",
-              :password => "password"
-            },
-            :redis => {
-              :host => "localhost",
-              :port => 6379
             },
             :api => {
               :host => "192.168.33.10",
-              :bind => "0.0.0.0",
-              :port => 9000
-            },
-            :dashboard => {
-               :bind => '0.0.0.0',
-               :port => 8080,
-               :user => 'admin',
-             :password => 'password'
             }
         }
       }
@@ -69,12 +53,8 @@ Vagrant.configure("2") do |config|
           :roles => ["hoge"],
         },
         :sensu => {
-            :use_ssl => false,
             :rabbitmq => {
               :host => "192.168.33.10",
-              :port => 5672, 
-              :user => "admin",
-              :password => "password"
             },
         }
       }
