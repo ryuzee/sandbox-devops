@@ -1,4 +1,4 @@
-myapp Cookbook
+sensu-client-wrapper Cookbook
 ==============
 TODO: Enter the cookbook description here.
 
@@ -11,14 +11,14 @@ TODO: List your cookbook requirements. Be sure to include any requirements this 
 
 e.g.
 #### packages
-- `toaster` - myapp needs toaster to brown your bagel.
+- `toaster` - sensu-client-wrapper needs toaster to brown your bagel.
 
 Attributes
 ----------
 TODO: List you cookbook attributes here.
 
 e.g.
-#### myapp::default
+#### sensu-client-wrapper::default
 <table>
   <tr>
     <th>Key</th>
@@ -27,7 +27,7 @@ e.g.
     <th>Default</th>
   </tr>
   <tr>
-    <td><tt>['myapp']['bacon']</tt></td>
+    <td><tt>['sensu-client-wrapper']['bacon']</tt></td>
     <td>Boolean</td>
     <td>whether to include bacon</td>
     <td><tt>true</tt></td>
@@ -36,17 +36,17 @@ e.g.
 
 Usage
 -----
-#### myapp::default
+#### sensu-client-wrapper::default
 TODO: Write usage instructions for each cookbook.
 
 e.g.
-Just include `myapp` in your node's `run_list`:
+Just include `sensu-client-wrapper` in your node's `run_list`:
 
 ```json
 {
   "name":"my_node",
   "run_list": [
-    "recipe[myapp]"
+    "recipe[sensu-client-wrapper]"
   ]
 }
 ```

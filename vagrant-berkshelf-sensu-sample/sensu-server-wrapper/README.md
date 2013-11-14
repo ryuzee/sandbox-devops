@@ -1,4 +1,4 @@
-acme_sensu_server Cookbook
+sensu-server-wrapper Cookbook
 ==========================
 TODO: Enter the cookbook description here.
 
@@ -11,14 +11,14 @@ TODO: List your cookbook requirements. Be sure to include any requirements this 
 
 e.g.
 #### packages
-- `toaster` - acme_sensu_server needs toaster to brown your bagel.
+- `toaster` - sensu-server-wrapper needs toaster to brown your bagel.
 
 Attributes
 ----------
 TODO: List you cookbook attributes here.
 
 e.g.
-#### acme_sensu_server::default
+#### sensu-server-wrapper::default
 <table>
   <tr>
     <th>Key</th>
@@ -27,7 +27,7 @@ e.g.
     <th>Default</th>
   </tr>
   <tr>
-    <td><tt>['acme_sensu_server']['bacon']</tt></td>
+    <td><tt>['sensu-server-wrapper']['bacon']</tt></td>
     <td>Boolean</td>
     <td>whether to include bacon</td>
     <td><tt>true</tt></td>
@@ -36,17 +36,17 @@ e.g.
 
 Usage
 -----
-#### acme_sensu_server::default
+#### sensu-server-wrapper::default
 TODO: Write usage instructions for each cookbook.
 
 e.g.
-Just include `acme_sensu_server` in your node's `run_list`:
+Just include `sensu-server-wrapper` in your node's `run_list`:
 
 ```json
 {
   "name":"my_node",
   "run_list": [
-    "recipe[acme_sensu_server]"
+    "recipe[sensu-server-wrapper]"
   ]
 }
 ```

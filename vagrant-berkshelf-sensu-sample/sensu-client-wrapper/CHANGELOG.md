@@ -1,11 +1,11 @@
-myapp CHANGELOG
+sensu-client-wrapper CHANGELOG
 ===============
 
-This file is used to list changes made in each version of the myapp cookbook.
+This file is used to list changes made in each version of the sensu-client-wrapper cookbook.
 
 0.1.0
 -----
-- [your_name] - Initial release of myapp
+- [ryuzee] - Initial release of sensu-client-wrapper
 
 - - -
 Check the [Markdown Syntax Guide](http://daringfireball.net/projects/markdown/syntax) for help with Markdown.

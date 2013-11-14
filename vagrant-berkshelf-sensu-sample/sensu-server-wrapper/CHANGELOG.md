@@ -1,11 +1,11 @@
-acme_sensu_server CHANGELOG
+sensu-server-wrapper CHANGELOG
 ===========================
 
-This file is used to list changes made in each version of the acme_sensu_server cookbook.
+This file is used to list changes made in each version of the sensu-server-wrapper cookbook.
 
 0.1.0
 -----
-- [your_name] - Initial release of acme_sensu_server
+- [ryuzee] - Initial release of sensu-server-wrapper
 
 - - -
 Check the [Markdown Syntax Guide](http://daringfireball.net/projects/markdown/syntax) for help with Markdown.
