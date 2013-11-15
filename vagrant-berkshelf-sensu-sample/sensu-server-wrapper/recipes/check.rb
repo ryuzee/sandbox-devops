@@ -26,3 +26,7 @@ template "/etc/sensu/conf.d/load-metrics.json" do
   mode  0755
   source "load-metrics.json.erb"
 end
+
+service "sensu-server" do
+  action :restart
+end

@@ -31,3 +31,7 @@ remote_file "/etc/sensu/plugins/load-metrics.rb" do
   mode 0755
 end
 
+service "sensu-client" do
+  action :restart
+end
+
