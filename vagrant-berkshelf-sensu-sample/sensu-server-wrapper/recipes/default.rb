@@ -14,7 +14,6 @@ iptables_rule "ssh"
 include_recipe "yum::epel"
 package "erlang" do
   action :install
-#  options "--disablerepo=\* --enablerepo=epel"
   options "--enablerepo=epel"
 end
 

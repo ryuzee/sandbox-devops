@@ -24,3 +24,10 @@ remote_file "/etc/sensu/plugins/check-procs.rb" do
   source "https://raw.github.com/sensu/sensu-community-plugins/master/plugins/processes/check-procs.rb"
   mode 0755
 end
+
+# Installing load-metric
+remote_file "/etc/sensu/plugins/load-metrics.rb" do
+  source "https://raw.github.com/sensu/sensu-community-plugins/master/plugins/system/load-metrics.rb"
+  mode 0755
+end
+
