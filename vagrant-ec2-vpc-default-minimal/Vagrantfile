@@ -1,0 +1,54 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+ 
+Vagrant.configure("2") do |config|
+ 
+  #--- 以下を指定 -- 
+  box_name = "dummy"
+  box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
+  ssh_username = "ec2-user"
+  subnet_id = "subnet-5b424232"
+  private_ip_address = "172.31.0.100"
+  security_groups = ["sg-12444f70"]
+  region = "ap-southeast-1"
+  ami = "ami-4296c310"
+  instance_type = "t1.micro"
+  #--- ここまで -- 
+ 
+  config.vm.box = box_name
+  config.vm.box_url = box_url
+
+  config.vm.provider :aws do |aws, override|
+    aws.access_key_id = ENV['AWS_ACCESS_KEY_ID']
+    aws.secret_access_key = ENV['AWS_SECRET_KEY']
+    aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
+    override.ssh.username = ssh_username
+    override.ssh.private_key_path = ENV['AWS_PRIVATE_KEY_PATH']
+ 
+    #---- VPC固有の設定 ----#
+    # リージョンを設定
+    aws.region = region 
+    # サブネットIDを指定
+    aws.subnet_id = subnet_id
+    # VPC内のローカルIPを指定
+    aws.private_ip_address = private_ip_address 
+    # Default VPCの場合
+    # 自動的にグローバルIPを取得して割り当ててる
+    # 固定IPである必要がなければ以下のオプション不要
+    # aws.elastic_ip = true 
+
+    # セキュリティグループを設定
+    # ここではIDのリストを指定
+    aws.security_groups = security_groups 
+    #---- VPC固有の設定ここまで ----#
+    
+    # User-data 
+    aws.user_data = "#!/bin/sh\nsed -i 's/^.*requiretty/#Defaults requiretty/' /etc/sudoers\n"
+    # タグを指定(任意)
+    aws.tags = aws.tags = { "Name" => "test-vpc-default-minimal", "env" => "dev"}
+    # AMIを指定。起動したいリージョンにあるAMI
+    aws.ami = ami 
+    # インスタンスタイプを設定
+    aws.instance_type = instance_type
+  end
+end 
