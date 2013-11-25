@@ -1,11 +1,4 @@
 site :opscode
-cookbook 'apt'
-cookbook 'yum'
-cookbook 'rabbitmq'
-cookbook 'redisio'
-cookbook 'iptables'
 
-cookbook 'sensu', git:"https://github.com/sensu/sensu-chef.git"
-
-cookbook 'sensu-client-wrapper', path:"./sensu-client-wrapper"
-cookbook 'sensu-server-wrapper', path:"./sensu-server-wrapper"
+cookbook 'sensu-client-wrapper', git:"https://github.com/ryuzee-cookbooks/sensu-client-wrapper.git"
+cookbook 'sensu-server-wrapper', git:"https://github.com/ryuzee-cookbooks/sensu-server-wrapper.git"
