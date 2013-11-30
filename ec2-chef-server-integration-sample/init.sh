@@ -28,6 +28,7 @@ log_location STDOUT
 node_name "$NODE_NAME"
 chef_server_url 'https://chef.meguro.ryuzee.com'
 validation_client_name 'chef-validator'
+environment "development"
 EOP
 ) > /etc/chef/client.rb
 
