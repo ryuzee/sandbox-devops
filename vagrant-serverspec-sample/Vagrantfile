@@ -1,0 +1,27 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # Every Vagrant virtual environment requires a box to build off of.
+  config.vm.box = "CentOS-6.4-x86_64-ja"
+  config.vm.box_url = "https://dl.dropboxusercontent.com/u/428597/vagrant_boxes/CentOS-6.4-x86_64-ja.box"
+  # config.vm.network :private_network, ip: "192.168.33.10"
+
+  config.vm.provision :shell, inline: <<-EOF
+    sudo yum install -y httpd mysql-server php php-mbstring php-mysql && \
+    sudo /sbin/chkconfig --level 2345 httpd on && \
+    sudo rm /etc/httpd/conf.d/welcome.conf && \
+    sudo touch /var/www/html/index.html && sudo chmod 666 /var/www/html/index.html && \
+    echo "Hello World" > /var/www/html/index.html && \
+    sudo /etc/rc.d/init.d/httpd start && \
+    sudo /sbin/chkconfig --level 2345 iptables off && \
+    sudo /etc/rc.d/init.d/iptables stop
+  EOF
+
+  config.vm.provision :serverspec do |spec|
+    spec.pattern = '*_spec.rb'
+  end
+end
