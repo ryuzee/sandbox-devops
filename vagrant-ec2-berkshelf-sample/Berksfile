@@ -1,5 +1,4 @@
 site :opscode
 
-cookbook 'apache2'
-cookbook 'mysql'
+cookbook 'apache2' ,git:"https://github.com/ryuzee-cookbooks/apache2.git"
 

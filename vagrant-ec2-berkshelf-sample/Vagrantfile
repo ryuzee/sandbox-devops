@@ -12,7 +12,6 @@ Vagrant.configure("2") do |config|
     aws.access_key_id = ENV['AWS_ACCESS_KEY_ID']
     aws.secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
 
-    # Region
     region = "ap-northeast-1"
     aws.region = region 
 
@@ -20,43 +19,24 @@ Vagrant.configure("2") do |config|
     env_key = region.upcase.gsub("-", "_")
     aws.keypair_name = ENV["AWS_KEYPAIR_NAME_#{env_key}"]
     override.ssh.private_key_path = ENV["AWS_PRIVATE_KEY_PATH_#{env_key}"]
+    override.ssh.username = "ec2-user"
 
-    # Username to login instance
-    override.ssh.username = "ubuntu"
-
-    # Instance type
     aws.instance_type = "t1.micro"
-
-    if region == "ap-northeast-1" then
-      aws.ami = "ami-fe6ceeff"
-      aws.availability_zone = "ap-northeast-1a"
-    end
-    if region == "ap-southeast-2" then
-      aws.ami = "ami-04ea7a3e"
-      aws.availability_zone = "ap-southeast-2a"
-    end
-
-    # Security group 
+    aws.ami = "ami-0d13700c"
+    aws.availability_zone = "ap-northeast-1a"
     aws.security_groups = ["web"]
-
-    # Tag (not compulsory)
     aws.tags = { 'Name' => "vagrant", "env" => "dev" }
+
+    # set user data
+    aws.user_data = "#!/bin/sh\nsed -i 's/^.*requiretty/#Defaults requiretty/' /etc/sudoers\n"
   end
 
-  config.omnibus.chef_version = "11.4.0"
+  config.omnibus.chef_version = :latest 
   config.berkshelf.enabled = true
 
   config.vm.provision :chef_solo do |chef|
     chef.run_list = [
       "recipe[apache2]"
     ]
-    # chef.json = {
-    #   :mysql => {
-    #     :server_root_password => "passwd",
-    #     :server_repl_password => "passwd",
-    #     :server_debian_password => "passwd"
-    #    }
-    # }
-
   end
 end
