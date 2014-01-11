@@ -59,6 +59,7 @@ Vagrant.configure("2") do |config|
       chef.log_level = :debug
       chef.data_bags_path = "data_bags"
       chef.add_recipe "sensu-client-wrapper"
+      chef.add_recipe "dstat"
       chef.json = {
         "sensu-client-wrapper" => {
           :ipaddress => "192.168.33.200",
@@ -108,27 +109,27 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  config.vm.define :admin do |admin|
-    admin.omnibus.chef_version = :latest
-    admin.vm.hostname = "admin"
-    admin.vm.box = "opscode-ubuntu-12.04"
-    admin.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box"
-    admin.vm.network :private_network, ip: "192.168.33.100"
-    admin.vm.provider :virtualbox do |vb|
-      # Don't boot with headless mode
-      vb.gui = true
-   
-      # Use VBoxManage to customize the VM. For example to change memory:
-      vb.customize ["modifyvm", :id, "--memory", "512"]
-    end
-
-    admin.vm.provision :chef_solo do |chef|
-      chef.log_level = :debug
-      chef.data_bags_path = "data_bags"
-      chef.add_recipe "ruby::1.9.1"
-      chef.add_recipe "sensu-admin"
-    end
-  end
+#  config.vm.define :admin do |admin|
+#    admin.omnibus.chef_version = :latest
+#    admin.vm.hostname = "admin"
+#    admin.vm.box = "opscode-ubuntu-12.04"
+#    admin.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box"
+#    admin.vm.network :private_network, ip: "192.168.33.100"
+#    admin.vm.provider :virtualbox do |vb|
+#      # Don't boot with headless mode
+#      vb.gui = true
+#   
+#      # Use VBoxManage to customize the VM. For example to change memory:
+#      vb.customize ["modifyvm", :id, "--memory", "512"]
+#    end
+#
+#    admin.vm.provision :chef_solo do |chef|
+#      chef.log_level = :debug
+#      chef.data_bags_path = "data_bags"
+#      chef.add_recipe "ruby::1.9.1"
+#      chef.add_recipe "sensu-admin"
+#    end
+#  end
 
   config.vm.define :graphite do |graphite|
     graphite.omnibus.chef_version = :latest
