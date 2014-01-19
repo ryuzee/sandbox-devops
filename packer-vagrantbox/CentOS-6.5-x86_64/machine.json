@@ -1,6 +1,6 @@
 {
   "builders":[{
-    "type": "virtualbox",
+    "type": "virtualbox-iso",
     "guest_os_type": "RedHat_64",
     "iso_url": "http://mozilla.ftp.iij.ad.jp/pub/linux/centos/6/isos/x86_64/CentOS-6.5-x86_64-minimal.iso",
     "iso_checksum": "0d9dc37b5dd4befa1c440d2174e88a87",
@@ -15,7 +15,8 @@
       "<esc><wait>",
       "linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg ",
       "<enter><wait>"
-    ]
+    ],
+    "shutdown_command": "sudo /sbin/poweroff"
   }],
   "provisioners":[{
     "type": "shell",
