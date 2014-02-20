@@ -63,7 +63,6 @@ Vagrant.configure("2") do |config|
       chef.log_level = :debug
       chef.data_bags_path = "data_bags"
       chef.add_recipe "sensu-client-wrapper"
-      chef.add_recipe "dstat"
       chef.json = {
         "sensu-client-wrapper" => {
           :ipaddress => "192.168.33.200",
