@@ -4,6 +4,9 @@ require 'berkshelf/vagrant'
 
 Vagrant.configure("2") do |config|
   config.berkshelf.enabled = true
+  if Vagrant.has_plugin?("vagrant-cachier")
+    config.cache.auto_detect = true
+  end
 
   config.vm.define :server do |server|
     # server.omnibus.chef_version = :latest
