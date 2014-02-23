@@ -4,22 +4,12 @@ require 'berkshelf/vagrant'
 
 VAGRANTFILE_API_VERSION = "2"
 
-#--------------------------------------------------------------------------------------- 
-# When you will access this instance via http from outside of this instance, 
-# You can not access it because of the lack of VirtualBox private network.
-# You need to assign private network and stop iptables when you would like to access it.
-#--------------------------------------------------------------------------------------- 
-
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.berkshelf.enabled = true
   config.omnibus.chef_version = :latest
   config.vm.box = "opscode-centos-6.4"
-  # config.vm.box_url = "http://domain.com/path/to/above.box"
-  # config.vm.network :forwarded_port, guest: 80, host: 8080
-  # config.vm.network :private_network, ip: "192.168.33.10"
-  # config.vm.network :public_network
-  # config.ssh.forward_agent = true
-  # config.vm.synced_folder "../data", "/vagrant_data"
+  # private_network の設定をしないと、ホスト側マシンからブラウザ等で繋がらないので注意
+  #config.vm.network :private_network, ip: "192.168.33.10"
   config.vm.provision :chef_solo do |chef|
     chef.add_recipe "apache2"
   end
