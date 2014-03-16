@@ -42,7 +42,7 @@ cat << 'EOP'
 #
 # chef_node     delete client and node
 #
-# chkconfig: 0 08 20 
+# chkconfig: 2345 08 20 
 
 VAR_SUBSYS_CHEF_NODE="/var/lock/subsys/chef-node"
 
@@ -66,5 +66,6 @@ exit $RETVAL
 EOP
 ) > /etc/rc.d/init.d/chef-node
 chmod 755 /etc/rc.d/init.d/chef-node
+/sbin/chkconfig --level 2345 chef-node on
 /sbin/chkconfig --level 0 chef-node off
 /etc/rc.d/init.d/chef-node start
