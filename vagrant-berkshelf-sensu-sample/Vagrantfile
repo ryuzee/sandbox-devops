@@ -66,6 +66,7 @@ Vagrant.configure("2") do |config|
       chef.log_level = :debug
       chef.data_bags_path = "data_bags"
       chef.add_recipe "sensu-client-wrapper"
+      chef.add_recipe "sensu-client-wrapper::auto-remove"
       chef.json = {
         "sensu-client-wrapper" => {
           :ipaddress => "192.168.33.200",
@@ -76,6 +77,9 @@ Vagrant.configure("2") do |config|
             :rabbitmq => {
               :host => "192.168.33.10",
             },
+            :api => {
+              :host => "192.168.33.10",
+            }
         }
       }
     end
@@ -112,6 +116,9 @@ Vagrant.configure("2") do |config|
             :rabbitmq => {
               :host => "192.168.33.10",
             },
+            :api => {
+              :host => "192.168.33.10",
+            }
         }
       }
     end
@@ -168,6 +175,9 @@ Vagrant.configure("2") do |config|
             :rabbitmq => {
               :host => "192.168.33.10",
             },
+            :api => {
+              :host => "192.168.33.10",
+            }
         },
         :graphite => {
             :timezone => "Asia/Tokyo",
