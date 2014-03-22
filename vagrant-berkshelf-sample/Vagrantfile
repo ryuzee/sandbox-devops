@@ -6,8 +6,9 @@
 # So you need to run `berks install --path cookbooks` first
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "CentOS-6.4-x86_64-ja"
-  config.vm.box_url = "https://dl.dropboxusercontent.com/u/428597/vagrant_boxes/CentOS-6.4-x86_64-ja.box"
+  config.omnibus.chef_version = :latest
+  config.vm.box = "opscode-centos-6.5"
+  config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box"
   config.vm.network :private_network, ip: "192.168.33.10"
   config.vm.provider :virtualbox do |vb|
     # Don't boot with headless mode
