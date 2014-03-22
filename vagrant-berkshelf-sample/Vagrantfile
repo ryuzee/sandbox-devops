@@ -1,6 +1,9 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
-require 'berkshelf/vagrant'
+#
+# UPDATED: 
+# vagrant-berkshelf was outdated.
+# So you need to run `berks install --path cookbooks` first
 
 Vagrant.configure("2") do |config|
   config.vm.box = "CentOS-6.4-x86_64-ja"
@@ -13,9 +16,9 @@ Vagrant.configure("2") do |config|
     # Use VBoxManage to customize the VM. For example to change memory:
     vb.customize ["modifyvm", :id, "--memory", "1024"]
   end
-  config.berkshelf.enabled = true
 
   config.vm.provision :chef_solo do |chef|
+    chef.cookbooks_path = ["./cookbooks", "./site-cookbooks"]
     chef.add_recipe "mysql::default"
     chef.add_recipe "mysql::server"
     chef.add_recipe "php"
