@@ -1,3 +1,0 @@
-site :opscode
-
-cookbook 'apache2', git:"https://github.com/ryuzee-cookbooks/apache2.git", tag: "v0.2.0"
