@@ -1,9 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
-require 'berkshelf/vagrant'
 
 Vagrant.configure("2") do |config|
-  config.berkshelf.enabled = true
   if Vagrant.has_plugin?("vagrant-cachier")
     config.cache.auto_detect = true
   end
@@ -25,11 +23,15 @@ Vagrant.configure("2") do |config|
     end
 
     server.vm.provision :chef_solo do |chef|
+      chef.cookbooks_path = ["./cookbooks", "./site-cookbooks"]
       chef.log_level = :debug
       chef.data_bags_path = "data_bags"
       chef.add_recipe "sensu-server-wrapper"
       chef.add_recipe "sensu-server-wrapper::check"
       chef.json = {
+        "sensu-server-wrapper" => {
+          "iptables_enabled" => true
+        },
         :sensu => {
             :rabbitmq => {
               :host => "192.168.33.10",
@@ -63,6 +65,7 @@ Vagrant.configure("2") do |config|
     end
 
     client01.vm.provision :chef_solo do |chef|
+      chef.cookbooks_path = ["./cookbooks", "./site-cookbooks"]
       chef.log_level = :debug
       chef.data_bags_path = "data_bags"
       chef.add_recipe "sensu-client-wrapper"
@@ -103,6 +106,7 @@ Vagrant.configure("2") do |config|
     end
 
     client02.vm.provision :chef_solo do |chef|
+      chef.cookbooks_path = ["./cookbooks", "./site-cookbooks"]
       chef.log_level = :debug
       chef.data_bags_path = "data_bags"
       chef.add_recipe "sensu-client-wrapper"
@@ -161,6 +165,7 @@ Vagrant.configure("2") do |config|
     end
 
     graphite.vm.provision :chef_solo do |chef|
+      chef.cookbooks_path = ["./cookbooks", "./site-cookbooks"]
       chef.log_level = :debug
       chef.data_bags_path = "data_bags"
       chef.add_recipe "sensu-client-wrapper"
