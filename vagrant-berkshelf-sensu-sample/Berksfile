@@ -8,4 +8,4 @@ cookbook 'sensu-server-wrapper', git:"https://github.com/ryuzee-cookbooks/sensu-
 cookbook 'ruby'
 cookbook 'sensu-admin', git:"https://github.com/sensu/sensu-admin-chef.git"
 # there is a bug in 0.4.6.
-cookbook 'graphite', "= 0.4.5" 
+cookbook 'graphite', "= 0.4.8" 
