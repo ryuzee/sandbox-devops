@@ -2,6 +2,7 @@ require 'rubygems'
 require 'chef/config'
 require 'chef/log'
 require 'chef/rest'
+require 'chef/node'
  
 Chef::Config.from_file("#{ENV['HOME']}/.chef/knife.rb")
  
