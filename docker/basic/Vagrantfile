@@ -1,0 +1,11 @@
+Vagrant.configure("2") do |config|
+  config.vm.provider "docker" do |d|
+    d.image = "ryuzee/basic"
+    d.remains_running = false 
+    d.has_ssh = true
+    d.ports = ["8000:80", "2200:22"]
+  end
+  config.ssh.username = "root"
+  config.ssh.password = "root"
+  config.ssh.port = "22"
+end
