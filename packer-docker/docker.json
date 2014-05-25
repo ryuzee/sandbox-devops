@@ -1,0 +1,27 @@
+{
+  "builders": [{
+    "type": "docker",
+    "image": "centos",
+    "export_path": "image.tar"
+  }],
+  "provisioners":[
+  {
+    "type": "shell",
+    "inline": [
+      "yum install -y sudo"
+    ]
+  },
+  {
+    "type": "chef-solo",
+    "cookbook_paths": ["./vendor-cookbooks/"],
+    "run_list": ["timezone", "apache2-simple", "memcached"],
+    "json": {"memcached":{"maxcon":"512","cachesize":"512"}},
+    "prevent_sudo": false,
+    "skip_install": false
+  }],
+  "post-processors": [{
+    "type": "docker-import",
+    "repository": "ryuzee/packer-sample",
+    "tag": "0.1"
+  }]
+}

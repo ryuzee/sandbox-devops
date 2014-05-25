@@ -1,0 +1,6 @@
+site :opscode
+
+cookbook 'yum', '~> 3.0'
+cookbook 'apache2-simple', :git => 'git://github.com/ryuzee-cookbooks/apache2-simple.git'
+cookbook 'memcached', :git => 'git://github.com/ryuzee-cookbooks/memcached.git'
+cookbook 'timezone', :git => 'git://github.com/ryuzee-cookbooks/timezone'
