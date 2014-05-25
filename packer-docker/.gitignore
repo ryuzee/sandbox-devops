@@ -1,3 +1,4 @@
 vendor-cookbooks
 packer_cache
 Berksfile.lock
+.vagrant
