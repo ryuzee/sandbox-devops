@@ -20,8 +20,8 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision :chef_solo do |chef|
     chef.cookbooks_path = ["./cookbooks", "./site-cookbooks"]
-    chef.add_recipe "mysql::default"
     chef.add_recipe "mysql::server"
+    chef.add_recipe "mysql::client"
     chef.add_recipe "php"
     chef.add_recipe "resolver"
     chef.add_recipe "iptables"
