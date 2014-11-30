@@ -1,17 +1,18 @@
 {
   "builders": [{
     "type": "docker",
-    "image": "centos",
+    "image": "ubuntu",
+    "run_command": ["-d", "-i", "-t", "{{.Image}}", "/bin/sh"],
     "export_path": "image.tar"
   }],
   "provisioners":[
   {
     "type": "chef-solo",
-    "cookbook_paths": ["./vendor-cookbooks/"],
+    "cookbook_paths": ["./cookbooks/"],
     "run_list": ["timezone", "apache2-simple", "memcached"],
     "json": {"memcached":{"maxcon":"512","cachesize":"512"}},
     "prevent_sudo": true,
-    "skip_install": false
+    "skip_install": true 
   }],
   "post-processors": [{
     "type": "docker-import",
