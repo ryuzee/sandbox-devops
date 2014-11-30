@@ -1,0 +1,8 @@
+Vagrant.configure("2") do |config|
+  config.vm.provider "docker" do |d|
+    d.image = "ryuzee/packer-sample:0.1"
+    d.remains_running = false 
+    d.cmd = ["/usr/sbin/httpd", "-DFOREGROUND"]
+    d.ports = ["8888:80"]
+  end
+end

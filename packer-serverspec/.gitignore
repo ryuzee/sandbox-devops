@@ -1,0 +1,6 @@
+vendor-cookbooks
+cookbooks
+packer_cache
+Berksfile.lock
+.vagrant
+Gemfile.lock

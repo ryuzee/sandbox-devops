@@ -1,0 +1,33 @@
+{
+  "builders": [{
+    "type": "docker",
+    "image": "ryuzee/centos_chef:6.4",
+    "run_command": ["-d", "--hostname=packer-sample", "-i", "-t", "{{.Image}}", "/bin/sh"],
+    "export_path": "image.tar"
+  }],
+
+  "provisioners":[
+  {
+    "type": "chef-solo",
+    "cookbook_paths": ["./cookbooks/"],
+    "run_list": ["ca-certificates", "timezone", "apache2-simple", "memcached"],
+    "json": {"memcached":{"maxcon":"512","cachesize":"512"}},
+    "prevent_sudo": true,
+    "skip_install": true 
+  },
+  {
+    "type": "file",
+    "source": "tests",
+    "destination": "/tmp"
+  },
+  {
+    "type": "shell",
+    "script": "scripts/serverspec.sh"
+  }
+  ],
+  "post-processors": [{
+    "type": "docker-import",
+    "repository": "ryuzee/packer-sample",
+    "tag": "0.1"
+  }]
+}
