@@ -1,10 +1,11 @@
 {
   "builders": [{
     "type": "docker",
-    "image": "ubuntu",
-    "run_command": ["-d", "-i", "-t", "{{.Image}}", "/bin/sh"],
+    "image": "ryuzee/centos_chef:6.4",
+    "run_command": ["-d", "--hostname=packer-sample", "-i", "-t", "{{.Image}}", "/bin/sh"],
     "export_path": "image.tar"
   }],
+
   "provisioners":[
   {
     "type": "chef-solo",
@@ -12,7 +13,7 @@
     "run_list": ["timezone", "apache2-simple", "memcached"],
     "json": {"memcached":{"maxcon":"512","cachesize":"512"}},
     "prevent_sudo": true,
-    "skip_install": true 
+    "skip_install": false 
   }],
   "post-processors": [{
     "type": "docker-import",
