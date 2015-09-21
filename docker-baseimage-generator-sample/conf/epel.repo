@@ -1,0 +1,8 @@
+[epel]
+name=Extra Packages for Enterprise Linux 6 - $basearch
+enabled=0
+failovermethod=priority
+gpgcheck=1
+gpgkey=http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6
+mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=epel-6&arch=$basearch
+sslverify=true

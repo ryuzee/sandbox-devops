@@ -1,0 +1,36 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+if !File.exists?(File.dirname(__FILE__) + "/export")
+  Dir::mkdir(File.dirname(__FILE__) + "/export")
+end
+
+version = ENV["CENTOS_BUILD_VERSION"] ? ENV["CENTOS_BUILD_VERSION"] : "6.5"
+
+script = <<SCRIPT
+MIRROR_URL="http://mirrors.usc.edu/pub/linux/distributions/centos/#{version}/os/x86_64/"
+MIRROR_URL_UPDATES="http://mirrors.usc.edu/pub/linux/distributions/centos/#{version}/updates/x86_64/"
+cp /tmp/epel.repo /etc/yum.repos.d/epel.repo
+yum install --enablerepo=epel -y febootstrap
+febootstrap -i bash -i coreutils -i tar -i bzip2 -i gzip -i vim-minimal -i wget -i patch -i diffutils -i iproute -i yum centos centos#{version}  $MIRROR_URL -u $MIRROR_URL_UPDATES
+touch centos#{version}/etc/resolv.conf
+touch centos#{version}/etc/sysconfig/network
+touch centos#{version}/sbin/init
+tar --numeric-owner -zcpf centos-#{version}.tar.gz -C centos#{version} .
+mv centos-#{version}.tar.gz /export/
+SCRIPT
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "opscode-centos-#{version}"
+  config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-#{version}_chef-provisionerless.box"
+  config.vm.synced_folder "./export", "/export"
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = true
+    vb.customize ["modifyvm", :id, "--memory", "1024"]
+  end
+
+  config.vm.provision "file", source: "./conf/epel.repo", destination: "/tmp/epel.repo"
+  config.vm.provision :shell, :inline => script
+end

@@ -1,0 +1,10 @@
+*~
+*#
+.#*
+\#*#
+.*.sw[a-z]
+*.un~
+pkg/
+.vagrant
+bin/*
+export/*
