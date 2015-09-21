@@ -1,0 +1,5 @@
+{
+  "provider": "lxc",
+  "version":  "3",
+  "built-on": "<TODAY>"
+}
