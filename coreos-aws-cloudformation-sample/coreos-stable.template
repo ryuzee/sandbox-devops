@@ -1,0 +1,237 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "CoreOS on EC2: http://coreos.com/docs/running-coreos/cloud-providers/ec2/",
+  "Mappings" : {
+      "RegionMap" : {
+          "eu-central-1"   : { "AMI" : "ami-38764825" },
+          "ap-northeast-1" : { "AMI" : "ami-8e22eb8e" },
+          "us-gov-west-1"  : { "AMI" : "ami-c90868ea" },
+          "sa-east-1"      : { "AMI" : "ami-1313940e" },
+          "ap-southeast-2" : { "AMI" : "ami-6383fc59" },
+          "ap-southeast-1" : { "AMI" : "ami-84546ad6" },
+          "us-east-1"      : { "AMI" : "ami-ea657582" },
+          "us-west-2"      : { "AMI" : "ami-65427155" },
+          "us-west-1"      : { "AMI" : "ami-77dd3333" },
+          "eu-west-1"      : { "AMI" : "ami-4b1c763c" }
+      }
+  },
+  "Parameters": {
+    "VpcId" : {
+      "Type" : "String",
+      "Description" : "VpcId of your existing Virtual Private Cloud (VPC).",
+    },
+    "Subnets" : {
+      "Type" : "CommaDelimitedList",
+      "Description" : "The list of SubnetIds where the stack will be launched"
+    },
+    "InstanceType" : {
+      "Description" : "EC2 HVM instance type (m3.medium, etc).",
+      "Type" : "String",
+      "Default" : "m3.medium",
+      "ConstraintDescription" : "Must be a valid EC2 HVM instance type."
+    },
+    "ClusterSize": {
+      "Default": "3",
+      "MinValue": "3",
+      "MaxValue": "12",
+      "Description": "Number of nodes in cluster (3-12).",
+      "Type": "Number"
+    },
+    "DiscoveryURL": {
+      "Description": "An unique etcd cluster discovery URL. Grab a new token from https://discovery.etcd.io/new",
+      "Type": "String"
+    },
+    "AdvertisedIPAddress": {
+      "Description": "Use 'private' if your etcd cluster is within one region or 'public' if it spans regions or cloud providers.",
+      "Default": "private",
+      "AllowedValues": ["private", "public"],
+      "Type": "String"
+    },
+    "AllowSSHFrom": {
+      "Description": "The net block (CIDR) that SSH is available to.",
+      "Default": "0.0.0.0/0",
+      "Type": "String"
+    },
+    "KeyPair" : {
+      "Description" : "The name of an EC2 Key Pair to allow SSH access to the instance.",
+      "Default": "keypair1",
+      "Type" : "String"
+    }
+  },
+  "Resources": {
+    "ELBSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "CoreOS SecurityGroup",
+        "VpcId" : { "Ref" : "VpcId" },
+        "SecurityGroupIngress": [
+          {"IpProtocol": "tcp", "FromPort": "80", "ToPort": "80", "CidrIp": "0.0.0.0/0"}
+        ]
+      }
+    },
+    "CoreOSSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "CoreOS SecurityGroup",
+        "VpcId" : { "Ref" : "VpcId" },
+        "SecurityGroupIngress": [
+          {"IpProtocol": "tcp", "FromPort": "22", "ToPort": "22", "CidrIp": {"Ref": "AllowSSHFrom"}}
+        ]
+      }
+    },
+    "Ingress4001": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Fn::GetAtt" : [ "CoreOSSecurityGroup", "GroupId" ]
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "4001",
+        "ToPort": "4001",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt" : [ "CoreOSSecurityGroup", "GroupId" ]
+        }
+      }
+    },
+    "Ingress7001": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Fn::GetAtt" : [ "CoreOSSecurityGroup", "GroupId" ]
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "7001",
+        "ToPort": "7001",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt" : [ "CoreOSSecurityGroup", "GroupId" ]
+        }
+      }
+    },
+    "Ingress80": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Fn::GetAtt" : [ "CoreOSSecurityGroup", "GroupId" ]
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "80",
+        "ToPort": "80",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt" : [ "ELBSecurityGroup", "GroupId" ]
+        }
+      }
+    },
+    "FrontendLoadBalancer": {
+      "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
+      "Properties": {
+        "Subnets": {"Ref" : "Subnets" },
+        "HealthCheck": {
+          "HealthyThreshold": "10",
+          "Interval": "30",
+          "Target": "HTTP:80/index.html",
+          "Timeout": "5",
+          "UnhealthyThreshold": "2"
+        },
+        "Listeners": [
+          {
+            "InstancePort": "80",
+            "LoadBalancerPort": "80",
+            "Protocol": "HTTP",
+            "InstanceProtocol": "HTTP"
+          }
+        ],
+        "SecurityGroups": [
+          {
+            "Ref": "ELBSecurityGroup"
+          }
+        ]
+      }
+    },
+    "CoreOSServerAutoScale": {
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+      "Properties": {
+        "AvailabilityZones": {"Fn::GetAZs": ""},
+        "VPCZoneIdentifier" : { "Ref" : "Subnets" },
+        "LaunchConfigurationName": {"Ref": "CoreOSServerLaunchConfig"},
+        "MinSize": "3",
+        "MaxSize": "12",
+        "DesiredCapacity": {"Ref": "ClusterSize"},
+        "Tags": [
+            {"Key": "Name", "Value": { "Ref" : "AWS::StackName" }, "PropagateAtLaunch": true}
+        ]
+      }
+    },
+    "CoreOSServerLaunchConfig": {
+      "Type": "AWS::AutoScaling::LaunchConfiguration",
+      "Properties": {
+        "ImageId" : { "Fn::FindInMap" : [ "RegionMap", { "Ref" : "AWS::Region" }, "AMI" ]},
+        "InstanceType": {"Ref": "InstanceType"},
+        "IamInstanceProfile": {
+          "Ref": "CoreOSASInstanceProfile"
+        },
+        "KeyName": {"Ref": "KeyPair"},
+        "SecurityGroups": [{"Ref": "CoreOSSecurityGroup"}],
+        "UserData" : { "Fn::Base64":
+          { "Fn::Join": [ "", [
+            "#cloud-config\n\n",
+            "coreos:\n",
+            "  etcd:\n",
+            "    discovery: ", { "Ref": "DiscoveryURL" }, "\n",
+            "    addr: $", { "Ref": "AdvertisedIPAddress" }, "_ipv4:4001\n",
+            "    peer-addr: $", { "Ref": "AdvertisedIPAddress" }, "_ipv4:7001\n",
+            "  units:\n",
+            "    - name: etcd.service\n",
+            "      command: start\n",
+            "    - name: fleet.service\n",
+            "      command: start\n"
+            ] ]
+          }
+        }
+      }
+    },
+    "CoreOSRootRole": {
+       "Type": "AWS::IAM::Role",
+       "Properties": {
+          "AssumeRolePolicyDocument": {
+             "Version" : "2012-10-17",
+             "Statement": [ {
+                "Effect": "Allow",
+                "Principal": {
+                   "Service": [ "ec2.amazonaws.com" ]
+                },
+                "Action": [ "sts:AssumeRole" ]
+             } ]
+          },
+          "Path": "/"
+       }
+    },
+    "CoreOSRolePolicies": {
+       "Type": "AWS::IAM::Policy",
+       "Properties": {
+          "PolicyName": "root",
+          "PolicyDocument": {
+             "Version" : "2012-10-17",
+             "Statement": [ {
+                "Effect": "Allow",
+                "Action": "elasticloadbalancing:*",
+                "Resource": "*"
+             } ]
+          },
+          "Roles": [ { "Ref": "CoreOSRootRole" } ]
+       }
+    },
+    "CoreOSASInstanceProfile": {
+       "Type": "AWS::IAM::InstanceProfile",
+       "Properties": {
+          "Path": "/",
+          "Roles": [ { "Ref": "CoreOSRootRole" } ]
+       }
+    }
+  },
+  "Outputs" : {
+    "FrontendLoadBalancerURL" : {
+      "Description" : "DNS Name of FrontendLoadBalancer",
+      "Value" : { "Fn::GetAtt" : [ "FrontendLoadBalancer", "DNSName" ] }
+    }
+  }
+}
