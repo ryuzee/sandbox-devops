@@ -3,7 +3,7 @@
     "type": "amazon-ebs",
     "region": "ap-northeast-1",
     "source_ami": "ami-3561fe34",
-    "instance_type": "m1.medium",
+    "instance_type": "c3.xlarge",
     "ssh_username": "ec2-user",
     "ssh_timeout": "5m",
     "ami_name": "amznlinux-{{timestamp}}"
