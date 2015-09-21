@@ -1,0 +1,7 @@
+source "https://supermarket.getchef.com"
+
+cookbook 'yum', '3.5.1'
+cookbook 'apache2-simple', :git => 'git://github.com/ryuzee-cookbooks/apache2-simple.git', ref:"c47d08933d16020f002fdf802ee32a8681c4db66"
+cookbook 'memcached', :git => 'git://github.com/ryuzee-cookbooks/memcached.git', ref:"6f32a279cfff3c189a7d16ac3472b77299ce93da"
+cookbook 'timezone', :git => 'git://github.com/ryuzee-cookbooks/timezone', ref:"bb758452e4efb83d5608eb51597be0ecc84ec185"
+cookbook 'ca-certificates', :git => 'git://github.com/ryuzee-cookbooks/ca-certificates', tag: "v0.1.0"

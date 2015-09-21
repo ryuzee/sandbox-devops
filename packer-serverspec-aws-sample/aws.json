@@ -1,0 +1,30 @@
+{
+  "builders": [{
+    "type": "amazon-ebs",
+    "region": "ap-northeast-1",
+    "source_ami": "ami-4985b048",
+    "instance_type": "c3.large",
+    "ssh_username": "ec2-user",
+    "ssh_timeout": "5m",
+    "ami_name": "demo-amznlinux-{{timestamp}}"
+  }],
+  "provisioners":[
+  {
+    "type": "chef-solo",
+    "cookbook_paths": ["./cookbooks/"],
+    "run_list": ["ca-certificates", "timezone", "apache2-simple", "memcached"],
+    "json": {"memcached":{"maxcon":"512","cachesize":"512"}},
+    "prevent_sudo": false,
+    "skip_install": false
+  },
+  {
+    "type": "file",
+    "source": "tests",
+    "destination": "/tmp"
+  },
+  {
+    "type": "shell",
+    "script": "scripts/serverspec.sh"
+  }
+  ]
+}
